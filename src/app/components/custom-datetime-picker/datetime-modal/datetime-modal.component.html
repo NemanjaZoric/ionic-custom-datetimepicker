@@ -1,0 +1,73 @@
+<div *ngIf="mode.dayPicker">
+  <div class="selected-date">
+    <ion-grid class="ion-no-margin ion-no-padding">
+      <ion-row class="ion-no-margin ion-no-padding">
+        <ion-col><ion-button fill="clear">{{date.format('L')}}</ion-button></ion-col>
+        <ion-col *ngIf="includeTime"><ion-datetime [(ngModel)]="time" class="time-picker" pickerFormat="HH:mm" displayFormat="HH:mm"></ion-datetime></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div class="calendar-picker">
+    <ion-grid>
+      <ion-row class="ion-no-margin ion-no-padding">
+        <ion-col style="text-align: center">
+          <ion-button fill="clear" (click)="selectPreviousMonth()"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
+          <ion-button class="month-name" fill="outline" (click)="selectMode('monthPicker')">{{date.format('MMMM')}}</ion-button>
+          <ion-button fill="clear" (click)="selectNextMonth()"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="day-names"><ion-col>Mon</ion-col><ion-col>Tue</ion-col><ion-col>Wed</ion-col><ion-col>Thur</ion-col><ion-col>Fri</ion-col><ion-col>Sat</ion-col><ion-col>Sun</ion-col></ion-row>
+      <ion-row *ngFor="let week of calendar">
+        <ion-col class="day-in-month" *ngFor="let day of week.days" [ngClass]="{'selected': (date.date() === day.date() && date.month() === day.month()), 'day-out-month': (date.month() !== day.month())}" (click)="selectDate(day)">
+          {{day.date()}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
+<div *ngIf="mode.monthPicker">
+  <div class="month-picker">
+    <ion-grid>
+      <ion-row>
+        <ion-col style="text-align: center">
+          <ion-button class="month-name" fill="outline" (click)="selectMode('yearPicker')">{{date.format('YYYY')}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let row of months">
+        <ion-col *ngFor="let col of row">
+          <ion-button fill="clear" expand="full" [ngClass]="{'selected': (col.monthNumber === date.month())}" (click)="selectMonth(col.monthNumber)">{{col.monthName}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
+<div *ngIf="mode.yearPicker">
+  <div class="years-picker">
+    <ion-grid>
+      <ion-row>
+        <ion-col style="text-align: center">
+          <ion-button fill="clear" (click)="selectPreviousYears()"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
+          <ion-button class="month-name" fill="outline">{{firstYear}} - {{lastYear}}</ion-button>
+          <ion-button fill="clear" (click)="selectNextYears()"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let row of selectedYears">
+        <ion-col *ngFor="let col of row">
+          <ion-button fill="clear" expand="full" [ngClass]="{'selected': (col === date.year())}" (click)="selectYear(col)">{{col}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
+<ion-footer>
+  <ion-grid class="ion-no-margin ion-no-padding ion-margin-top">
+    <ion-row class="ion-no-margin ion-no-padding">
+      <ion-col class="ion-no-margin ion-no-padding">
+        <ion-button (click)="cancelModal()" class="ion-no-padding ion-no-margin" expand="block" fill="clear">Cancel</ion-button>
+      </ion-col>
+      <ion-col class="ion-no-margin ion-no-padding">
+        <ion-button (click)="dismissModal()" class="ion-no-padding ion-no-margin" expand="block">OK</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

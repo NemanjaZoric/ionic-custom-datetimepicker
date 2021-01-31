@@ -1,0 +1,26 @@
+.selected {
+  background-color: var(--ion-color-primary);
+  color: white!important;
+}
+
+.day-in-month {
+  color: #000;
+}
+
+.day-out-month {
+  color: grey;
+}
+
+.day-names {
+  color: var(--ion-color-primary);
+}
+
+.month-name {
+  color: grey;
+}
+
+.time-picker {
+  color: var(--ion-color-primary);
+  height: 100%;
+  align-items: center;
+}

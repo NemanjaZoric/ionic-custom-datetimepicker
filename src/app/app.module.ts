@@ -8,11 +8,12 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import {CustomDatetimePickerModule} from './components/custom-datetime-picker/custom-datetime-picker.module';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, CustomDatetimePickerModule],
   providers: [
     StatusBar,
     SplashScreen,
