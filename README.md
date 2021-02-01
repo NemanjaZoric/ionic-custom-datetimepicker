@@ -17,7 +17,11 @@ If time is included, ion-datetime component is activatead.
 - `id` input is a string used to identify input of the component
 
 ### Output 
-- `dateEvent` output is used to return selected value of the component. 
+- `dateEvent` output is used to return selected value of the component.
+
+### TODO
+1. Implement min-max date range
+2. Implement disabled dates 
 
 
 ## DEMO
