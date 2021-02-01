@@ -65,6 +65,7 @@ export class CustomDatetimePickerComponent implements OnInit {
         } else if (!this.format && this.includeTime) {
             this.format = 'L HH:mm';
         }
+        console.log(this.inputDateTime);
         this.formattedDateTime = moment(this.inputDateTime).format(this.format);
     }
 

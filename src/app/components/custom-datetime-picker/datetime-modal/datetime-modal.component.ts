@@ -116,7 +116,7 @@ export class DatetimeModalComponent implements OnInit {
         if (!this.time) {
             this.time = '00:00';
         }
-        const dateTime = `${this.date.format('YYYY-MM-DD')}T${this.time}:00.000Z`;
+        const dateTime = moment(`${this.date.format('YYYY-MM-DD')} ${this.time}`);
         await this.modalController.dismiss({
             dateTime
         });
