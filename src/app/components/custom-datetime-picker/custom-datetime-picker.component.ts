@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {DatetimeModalComponent} from './datetime-modal/datetime-modal.component';
 import * as moment from 'moment';
+import {WeekdayEnum} from './datetime-modal/weekday.enum';
 
 @Component({
     selector: 'app-custom-datetime-picker',
@@ -15,6 +16,9 @@ export class CustomDatetimePickerComponent implements OnInit {
     @Input() public includeTime = false;
     @Input() public format: string;
     @Input() public id: string;
+    @Input() public min?: string;
+    @Input() public max?: string;
+    @Input() public disabledWeekDays?: WeekdayEnum[];
 
     public formattedDateTime: string;
 
@@ -36,6 +40,9 @@ export class CustomDatetimePickerComponent implements OnInit {
             componentProps: {
                 inputDateTime: this.inputDateTime,
                 includeTime: this.includeTime,
+                min: this.min,
+                max: this.max,
+                disabledWeekDays: this.disabledWeekDays,
             },
             cssClass: 'custom-datetime-picker'
         });
@@ -65,7 +72,6 @@ export class CustomDatetimePickerComponent implements OnInit {
         } else if (!this.format && this.includeTime) {
             this.format = 'L HH:mm';
         }
-        console.log(this.inputDateTime);
         this.formattedDateTime = moment(this.inputDateTime).format(this.format);
     }
 

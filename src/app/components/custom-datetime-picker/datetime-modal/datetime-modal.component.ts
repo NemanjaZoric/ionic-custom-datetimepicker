@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import {ModalController} from '@ionic/angular';
+import {MomentInput} from 'moment';
+import {WeekdayEnum} from './weekday.enum';
 
 @Component({
     selector: 'app-datetime-modal',
@@ -10,7 +12,11 @@ import {ModalController} from '@ionic/angular';
 export class DatetimeModalComponent implements OnInit {
     @Input() public inputDateTime: string;
     @Input() public includeTime: boolean;
+    @Input() public min: string | MomentInput;
+    @Input() public max: string | MomentInput;
+    @Input() public disabledWeekDays: WeekdayEnum[];
     public date: any;
+    public selectedDate: any;
     public time: string;
     public calendar: any = [];
     public months: any;
@@ -29,6 +35,13 @@ export class DatetimeModalComponent implements OnInit {
     }
 
     public ngOnInit() {
+        if (this.min) {
+            this.min = moment(this.min);
+        }
+        if (this.max) {
+            this.max = moment(this.max);
+        }
+        console.log(this.min, this.max, this.disabledWeekDays);
         if (this.inputDateTime) {
             this.date = moment(this.inputDateTime);
             if (this.includeTime) {
@@ -44,6 +57,7 @@ export class DatetimeModalComponent implements OnInit {
                 this.time = null;
             }
         }
+        this.selectedDate = this.date.clone();
         this.generateCalendar();
         this.months = this.generateMonths();
         this.years = this.generateYears();
@@ -52,7 +66,9 @@ export class DatetimeModalComponent implements OnInit {
     }
 
     public selectDate(date) {
-        this.date = date;
+        if (!date.disabled) {
+            this.selectedDate = date;
+        }
     }
 
     public selectMode(key) {
@@ -116,10 +132,15 @@ export class DatetimeModalComponent implements OnInit {
         if (!this.time) {
             this.time = '00:00';
         }
-        const dateTime = moment(`${this.date.format('YYYY-MM-DD')} ${this.time}`);
+        const dateTime = moment(`${this.selectedDate.format('YYYY-MM-DD')} ${this.time}`);
         await this.modalController.dismiss({
             dateTime
         });
+    }
+
+    public resetCalendar() {
+        this.date = this.selectedDate.clone();
+        this.generateCalendar();
     }
 
     private generateCalendar() {
@@ -134,6 +155,10 @@ export class DatetimeModalComponent implements OnInit {
                 days: Array(7).fill(0).map(() => date.add(1, 'day').clone()),
             });
         }
+
+        this.disableDaysOnMinDate();
+        this.disableDaysOnMaxDate();
+        this.disableDaysOnSelectableWeekDays();
     }
 
     private generateMonths() {
@@ -170,7 +195,8 @@ export class DatetimeModalComponent implements OnInit {
     private generateYears() {
         this.years = [];
         const startYear = 1970;
-        const endYear = parseInt(moment().format('YYYY'), 10);
+        // const endYear = parseInt(moment().format('YYYY'), 10);
+        const endYear = 2099;
         const years = [];
         const yearsToSort = [];
         for (let i = startYear; i <= endYear; i++) {
@@ -184,9 +210,7 @@ export class DatetimeModalComponent implements OnInit {
 
     private getSelectedYears(year) {
         let selectedArr = [];
-        // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this.years.length; i++) {
-            // tslint:disable-next-line:prefer-for-of
             for (let j = 0; j < this.years[i].length; j++) {
                 if (this.years[i][j] === year) {
                     selectedArr = this.years[i];
@@ -237,6 +261,40 @@ export class DatetimeModalComponent implements OnInit {
             }
         });
         return index;
+    }
+
+    private disableDaysOnMinDate() {
+        for (let i = 0; i < this.calendar.length; i++) {
+            for (let j = 0; j < this.calendar[i].days.length; j++) {
+                if (this.calendar[i].days[j] < this.min) {
+                    this.calendar[i].days[j].disabled = true;
+                }
+            }
+        }
+    }
+
+    private disableDaysOnMaxDate() {
+        for (let i = 0; i < this.calendar.length; i++) {
+            for (let j = 0; j < this.calendar[i].days.length; j++) {
+                if (this.calendar[i].days[j] > this.max) {
+                    this.calendar[i].days[j].disabled = true;
+                }
+            }
+        }
+    }
+
+    private disableDaysOnSelectableWeekDays() {
+        for (let i = 0; i < this.calendar.length; i++) {
+            for (let j = 0; j < this.calendar[i].days.length; j++) {
+                const day = this.calendar[i].days[j].clone();
+                const weekdayName = day.format('dddd').toLowerCase();
+                this.disabledWeekDays.forEach((disabledWeekDay) => {
+                    if (disabledWeekDay === weekdayName) {
+                        this.calendar[i].days[j].disabled = true;
+                    }
+                });
+            }
+        }
     }
 
 }

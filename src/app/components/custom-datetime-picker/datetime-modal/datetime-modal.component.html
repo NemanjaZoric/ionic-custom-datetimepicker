@@ -2,7 +2,7 @@
   <div class="selected-date">
     <ion-grid class="ion-no-margin ion-no-padding">
       <ion-row class="ion-no-margin ion-no-padding">
-        <ion-col><ion-button fill="clear">{{date.format('L')}}</ion-button></ion-col>
+        <ion-col><ion-button (click)="resetCalendar()" fill="clear">{{selectedDate.format('L')}}</ion-button></ion-col>
         <ion-col *ngIf="includeTime"><ion-datetime [(ngModel)]="time" class="time-picker" pickerFormat="HH:mm" displayFormat="HH:mm"></ion-datetime></ion-col>
       </ion-row>
     </ion-grid>
@@ -18,7 +18,7 @@
       </ion-row>
       <ion-row class="day-names"><ion-col>Mon</ion-col><ion-col>Tue</ion-col><ion-col>Wed</ion-col><ion-col>Thur</ion-col><ion-col>Fri</ion-col><ion-col>Sat</ion-col><ion-col>Sun</ion-col></ion-row>
       <ion-row *ngFor="let week of calendar">
-        <ion-col class="day-in-month" *ngFor="let day of week.days" [ngClass]="{'selected': (date.date() === day.date() && date.month() === day.month()), 'day-out-month': (date.month() !== day.month())}" (click)="selectDate(day)">
+        <ion-col class="day-in-month" *ngFor="let day of week.days" [ngClass]="{'selected': (selectedDate.date() === day.date() && selectedDate.month() === day.month() && !day.disabled), 'day-out-month': (date.month() !== day.month()), 'calendar-disabled': day.disabled}" (click)="selectDate(day)">
           {{day.date()}}
         </ion-col>
       </ion-row>
