@@ -28,4 +28,4 @@ If time is included, ion-datetime component is activatead.
 
 
 ## DEMO
-- https://stackblitz.com/edit/custom-datetime-picker
+- https://custom-datetime-picker.stackblitz.io
