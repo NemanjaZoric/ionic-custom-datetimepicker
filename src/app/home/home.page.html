@@ -24,6 +24,10 @@
         <app-custom-datetime-picker [inputDateTime]="dateTime2" [includeTime]="true" [id]="'datetime-picker'" (dateEvent)="date2Changed($event)"></app-custom-datetime-picker>
       </ion-item>
       <ion-item>
+        <ion-label>DateTime picker (12)</ion-label>
+        <app-custom-datetime-picker [inputDateTime]="dateTime2" [amPm]="true" [includeTime]="true" [id]="'datetime-picker-12'" (dateEvent)="date2Changed($event)"></app-custom-datetime-picker>
+      </ion-item>
+      <ion-item>
         <ion-label>[Min] Date picker</ion-label>
         <app-custom-datetime-picker [inputDateTime]="dateTime3" id="min-date-picker" (dateEvent)="date3Changed($event)" [min]="minDateTime3"></app-custom-datetime-picker>
       </ion-item>
@@ -37,7 +41,21 @@
       </ion-item>
       <ion-item>
         <ion-label>[Mixed] Date picker</ion-label>
-        <app-custom-datetime-picker [inputDateTime]="dateTime6" id="mixed-date-picker" (dateEvent)="date6Changed($event)" [min]="minDate6" [max]="maxDate6" [disabledWeekDays]="disabledWeekDays6"></app-custom-datetime-picker>
+        <app-custom-datetime-picker [inputDateTime]="dateTime6" id="mixed-date-picker" [weekStart]="weekDayEnum.sunday" (dateEvent)="date6Changed($event)" [min]="minDate6" [max]="maxDate6" [disabledWeekDays]="disabledWeekDays6"></app-custom-datetime-picker>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h2>Date picker</h2>
+          <p>Starting day - tuesday</p>
+        </ion-label>
+        <app-custom-datetime-picker [inputDateTime]="dateTime6" id="tuesday-date-picker" [weekStart]="weekDayEnum.tuesday" (dateEvent)="date6Changed($event)" [min]="minDate6" [max]="maxDate6" [disabledWeekDays]="disabledWeekDays6"></app-custom-datetime-picker>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h2>Date picker</h2>
+          <p>Start-end year</p>
+          <app-custom-datetime-picker [inputDateTime]="dateTime6" id="year-date-picker" startYear="2020" endYear="2030" [weekStart]="weekDayEnum.tuesday" (dateEvent)="date6Changed($event)" [min]="minDate6" [max]="maxDate6" [disabledWeekDays]="disabledWeekDays6"></app-custom-datetime-picker>
+        </ion-label>
       </ion-item>
     </ion-list>
   </div>

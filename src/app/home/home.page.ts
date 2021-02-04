@@ -23,6 +23,8 @@ export class HomePage {
   public maxDate6 = '2021-02-15';
   public disabledWeekDays6: WeekdayEnum[];
 
+  public weekDayEnum = WeekdayEnum;
+
   constructor() {}
 
   public ionViewDidEnter() {
@@ -33,7 +35,7 @@ export class HomePage {
     this.dateTime5 = moment().format('YYYY-MM-DDTHH:mm:ss.000Z');
     this.dateTime6 = moment().format('YYYY-MM-DDTHH:mm:ss.000Z');
     this.disabledWeekDays = [WeekdayEnum.wednesday, WeekdayEnum.thursday, WeekdayEnum.friday, WeekdayEnum.saturday, WeekdayEnum.sunday];
-    this.disabledWeekDays6 = [WeekdayEnum.sunday];
+    this.disabledWeekDays6 = [WeekdayEnum.friday, WeekdayEnum.sunday];
   }
 
   public date1Changed(value) {

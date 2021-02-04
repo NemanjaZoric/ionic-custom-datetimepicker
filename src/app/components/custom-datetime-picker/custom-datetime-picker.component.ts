@@ -14,11 +14,15 @@ export class CustomDatetimePickerComponent implements OnInit {
     @Input() public inputDateTime: string;
     @Input() public placeholder: string;
     @Input() public includeTime = false;
-    @Input() public format: string;
     @Input() public id: string;
     @Input() public min?: string;
     @Input() public max?: string;
     @Input() public disabledWeekDays?: WeekdayEnum[];
+    @Input() public weekStart?: WeekdayEnum;
+    @Input() public startYear?: number;
+    @Input() public endYear?: number;
+    @Input() public dateFormat?: string;
+    @Input() public amPm?: boolean;
 
     public formattedDateTime: string;
 
@@ -43,8 +47,13 @@ export class CustomDatetimePickerComponent implements OnInit {
                 min: this.min,
                 max: this.max,
                 disabledWeekDays: this.disabledWeekDays,
+                weekStart: this.weekStart ?? WeekdayEnum.monday,
+                startYear: this.startYear ?? 1970,
+                endYear: this.endYear ?? 2099,
+                dateFormat: this.dateFormat ?? 'L',
+                amPm: this.amPm ?? false,
             },
-            cssClass: 'custom-datetime-picker'
+            cssClass: 'custom-datetime-picker',
         });
         await modal.present();
 
@@ -67,12 +76,15 @@ export class CustomDatetimePickerComponent implements OnInit {
     }
 
     private formatDateTime() {
-        if (!this.format && !this.includeTime) {
-            this.format = 'L';
-        } else if (!this.format && this.includeTime) {
-            this.format = 'L HH:mm';
+        if (!this.dateFormat && !this.includeTime) {
+            this.dateFormat = 'L';
+        } else if (!this.dateFormat && this.includeTime) {
+            this.dateFormat = 'L HH:mm';
+            if (this.amPm) {
+                this.dateFormat = 'L hh:mm A';
+            }
         }
-        this.formattedDateTime = moment(this.inputDateTime).format(this.format);
+        this.formattedDateTime = moment(this.inputDateTime).format(this.dateFormat);
     }
 
 }

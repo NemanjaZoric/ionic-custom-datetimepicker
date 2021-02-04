@@ -2,8 +2,8 @@
   <div class="selected-date">
     <ion-grid class="ion-no-margin ion-no-padding">
       <ion-row class="ion-no-margin ion-no-padding">
-        <ion-col><ion-button (click)="resetCalendar()" fill="clear">{{selectedDate.format('L')}}</ion-button></ion-col>
-        <ion-col *ngIf="includeTime"><ion-datetime [(ngModel)]="time" class="time-picker" pickerFormat="HH:mm" displayFormat="HH:mm"></ion-datetime></ion-col>
+        <ion-col><ion-button (click)="resetCalendar()" fill="clear">{{selectedDate.format(dateFormat)}}</ion-button></ion-col>
+        <ion-col *ngIf="includeTime"><ion-datetime [(ngModel)]="time" class="time-picker" [pickerFormat]="dateTimePickerFormat" [displayFormat]="dateTimePickerFormat"></ion-datetime></ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -16,7 +16,11 @@
           <ion-button fill="clear" (click)="selectNextMonth()"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
         </ion-col>
       </ion-row>
-      <ion-row class="day-names"><ion-col>Mon</ion-col><ion-col>Tue</ion-col><ion-col>Wed</ion-col><ion-col>Thur</ion-col><ion-col>Fri</ion-col><ion-col>Sat</ion-col><ion-col>Sun</ion-col></ion-row>
+      <ion-row class="day-names">
+        <ion-col *ngFor="let weekday of weekdays">
+          {{weekday.shortDay}}
+        </ion-col>
+      </ion-row>
       <ion-row *ngFor="let week of calendar">
         <ion-col class="day-in-month" *ngFor="let day of week.days" [ngClass]="{'selected': (selectedDate.date() === day.date() && selectedDate.month() === day.month() && !day.disabled), 'day-out-month': (date.month() !== day.month()), 'calendar-disabled': day.disabled}" (click)="selectDate(day)">
           {{day.date()}}
@@ -30,11 +34,11 @@
     <ion-grid>
       <ion-row>
         <ion-col style="text-align: center">
-          <ion-button class="month-name" fill="outline" (click)="selectMode('yearPicker')">{{date.format('YYYY')}}</ion-button>
+          <ion-button class="month-name" fill="outline" (click)="selectMode('yearPicker')"><ion-icon name="calendar-outline"></ion-icon>{{date.format('YYYY')}}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row *ngFor="let row of months">
-        <ion-col *ngFor="let col of row">
+        <ion-col class="ion-no-padding ion-no-margin" *ngFor="let col of row">
           <ion-button fill="clear" expand="full" [ngClass]="{'selected': (col.monthNumber === date.month())}" (click)="selectMonth(col.monthNumber)">{{col.monthName}}</ion-button>
         </ion-col>
       </ion-row>
@@ -46,13 +50,13 @@
     <ion-grid>
       <ion-row>
         <ion-col style="text-align: center">
-          <ion-button fill="clear" (click)="selectPreviousYears()"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
+          <ion-button fill="clear" [disabled]="prevYearDisabled" (click)="selectPreviousYears()"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
           <ion-button class="month-name" fill="outline">{{firstYear}} - {{lastYear}}</ion-button>
-          <ion-button fill="clear" (click)="selectNextYears()"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
+          <ion-button fill="clear" [disabled]="nextYearDisabled" (click)="selectNextYears()"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
         </ion-col>
       </ion-row>
       <ion-row *ngFor="let row of selectedYears">
-        <ion-col *ngFor="let col of row">
+        <ion-col class="ion-no-padding ion-no-margin" *ngFor="let col of row">
           <ion-button fill="clear" expand="full" [ngClass]="{'selected': (col === date.year())}" (click)="selectYear(col)">{{col}}</ion-button>
         </ion-col>
       </ion-row>
